@@ -13,7 +13,7 @@ def generate_odd(size_bits):  # using our generator create odds of different siz
         sum += rnd
         size += 512
 
-    num = sum & ((1 << size_bits) - 1)
-    num = num | (1 << (size_bits - 1))
-    num = num | 1
-    return num  #Integer
+    num = sum & ((1 << size_bits) - 1)  # mask to correspond required length
+    num = num | (1 << (size_bits - 1))  # MSB first bit must be 1 to ensure required len
+    num = num | 1  # LSB last bit must be 1 to ensure oddness of number
+    return num  # Integer

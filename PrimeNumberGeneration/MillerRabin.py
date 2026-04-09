@@ -1,6 +1,6 @@
-from PrimeNumberGeneration.OddNumberGenerator import generate_odd
 from PrimeNumberGeneration.RandomBytes import random_bytes
-from PrimeNumberGeneration.helpers.lencom import comparator
+from helpers.lencom import comparator
+
 
 def miller_rabin(bit_size, odd): # Miller Rabin primarity test
     if odd < 2:
