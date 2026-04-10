@@ -1,5 +1,6 @@
 from PrimeNumberGeneration.PrimeGenerator import generate_prime
 from ModularArithmeticOperations.GCD import gcd
+from ModularArithmeticOperations.ExtendedEuclideanAlgorithm import inverse
 
 def generate_keys(bit_size):
     while True:
@@ -11,5 +12,9 @@ def generate_keys(bit_size):
             e = 65537
             if gcd(e, fi) == 1:
                 break
+    d = inverse(e, fi)
+    print(e * d % fi == 1)
+    public_key = (n, e)
+    private_key = (n, d, p, q)
+    return public_key, private_key
 
-    
