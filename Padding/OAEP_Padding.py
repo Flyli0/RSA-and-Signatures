@@ -1,6 +1,6 @@
 from helpers.SHA256.SecureHashingAlgorithm import sha_256
 from PrimeNumberGeneration.RandomBytes import random_bytes
-from MaskGenerationFunction import mgf
+from Padding.MaskGenerationFunction import mgf
 # DB = lHash || PS || 0x01 || message
 # EM = 0x00 || ms || mdb
 

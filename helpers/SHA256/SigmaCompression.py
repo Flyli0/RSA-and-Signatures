@@ -1,4 +1,4 @@
-from SHA256.helpers import shr, rotr, mask
+from helpers.SHA256.helpers import shr, rotr, mask
 
 
 def big_sigma_0(x):

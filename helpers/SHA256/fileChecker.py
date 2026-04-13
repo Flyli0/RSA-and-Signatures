@@ -1,4 +1,4 @@
-from SHA256.SecureHashingAlgorithm import sha_256
+from helpers.SHA256.SecureHashingAlgorithm import sha_256
 
 
 def sha_file(path:str):  # function to hash files with sha

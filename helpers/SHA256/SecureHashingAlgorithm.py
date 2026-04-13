@@ -1,9 +1,9 @@
-from SHA256.Choose import ch
-from SHA256.Major import maj
-from SHA256.SigmaCompression import small_sigma_0, small_sigma_1, big_sigma_0, big_sigma_1
-from SHA256.Padding import padding
-from SHA256.Constants import H, K
-from SHA256.helpers import mask
+from helpers.SHA256.Choose import ch
+from helpers.SHA256.Major import maj
+from helpers.SHA256.SigmaCompression import small_sigma_0, small_sigma_1, big_sigma_0, big_sigma_1
+from helpers.SHA256.Padding import padding
+from helpers.SHA256.Constants import H, K
+from helpers.SHA256.helpers import mask
 
 
 def sha_256(message):  # OUR SHA256 realization
