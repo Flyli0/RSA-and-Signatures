@@ -1,5 +1,5 @@
-from Padding.PSS_encode import pss_encode
-from Padding.PSS_verify import pss_verify
+from Signatures.PSS_encode import pss_encode
+from Signatures.PSS_verify import pss_verify
 
 #PSS encoding, verification test
 message = 'fwfe'
