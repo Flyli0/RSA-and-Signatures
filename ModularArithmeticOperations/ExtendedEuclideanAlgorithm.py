@@ -13,3 +13,6 @@ def inverse(a, m):
         y2 = y1
         y1 = y
     return y2 % m
+
+
+

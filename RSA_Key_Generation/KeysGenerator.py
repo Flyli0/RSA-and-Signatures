@@ -7,7 +7,7 @@ def generate_keys(bit_size):
     while True:
         p = generate_prime(bit_size // 2)
         q = generate_prime(bit_size // 2)
-        if abs(p - q) > 2 ** (100):  # (bit_size / 2 - 100)
+        if abs(p - q) > 2 ** 100:  # the standard power is (bit_size / 2 - 100) but it takes long for >= 2048 keys
             n = p * q
             fi = (p - 1) * (q - 1)
             e = 65537
@@ -22,4 +22,6 @@ def generate_keys(bit_size):
     public_key = (n, e)
     private_key = (n, d, p, q, dP, dQ, qInv)
     return public_key, private_key
+
+
 
