@@ -1,6 +1,8 @@
 from PrimeNumberGeneration.SHA512.SecureHashingAlgorithm import sha_512
 from Padding.MaskGenerationFunction import mgf
 
+#function for PSS verification, takes message, encoded message, its size in bits, salt length in
+# bytes
 def pss_verify(message, em, em_bits, salt_len=64):
     m_hash = sha_512(message)
     h_len = 64

@@ -1,3 +1,4 @@
+#function for calculating GCD
 def gcd(a, b):
     while b != 0:
         temp = b

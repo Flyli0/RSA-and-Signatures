@@ -1,6 +1,7 @@
 from PrimeNumberGeneration.SHA512.SecureHashingAlgorithm import sha_512
 from EncryptionDecryption.Seed import seed
 
+#function for PKCS padding, takes message and size of key in bits
 def pkcs_padding(message, bit_size):
     byte_size = bit_size // 8
     ps_length = byte_size - (3 + len(message))
