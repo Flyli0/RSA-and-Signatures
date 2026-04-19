@@ -28,8 +28,8 @@ k = (private[0].bit_length() + 7) // 8
 EM = m.to_bytes(k, "big")
 
 # 6. unpad
-msg = oaep_unpad(m, 1024)   # если твоя функция ждёт int
+# msg = oaep_unpad(m, 1024)   # if your function takes int
 # или:
-# msg = oaep_unpad(EM, 1024)  # если bytes
+msg = oaep_unpad(EM, 1024)  # if bytes
 print(msg)
 print(msg.decode())

@@ -47,3 +47,9 @@ for p in cmNum:
         print("Prime")
     else:
         print("Not Prime")
+
+
+
+
+
+        
