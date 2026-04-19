@@ -2,6 +2,7 @@ from PrimeNumberGeneration.PrimeGenerator import generate_prime
 from ModularArithmeticOperations.GCD import gcd
 from ModularArithmeticOperations.ExtendedEuclideanAlgorithm import inverse
 
+#function that takes bit size of a key and generates it
 def generate_keys(bit_size):
     while True:
         p = generate_prime(bit_size // 2)

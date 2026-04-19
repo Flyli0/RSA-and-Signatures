@@ -2,6 +2,7 @@ from PrimeNumberGeneration.SHA512.SecureHashingAlgorithm import sha_512
 from EncryptionDecryption.Seed import seed
 from Padding.MaskGenerationFunction import mgf
 
+#function for PSS encoding, takes a message, size of a key in bits, salt length in bytes
 def pss_encode(message, em_bits, salt_len = 64):
     m_hash = sha_512(message)
     h_len = 64

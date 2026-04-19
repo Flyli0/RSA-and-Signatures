@@ -1,3 +1,4 @@
+# function for RSA decryption
 def decrypt(cipher, private_key):
     n, d, p, q, dP, dQ, qInv = private_key
 

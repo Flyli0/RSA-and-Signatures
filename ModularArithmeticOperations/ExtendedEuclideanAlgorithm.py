@@ -1,3 +1,4 @@
+#function to calculate modular inverse of a modulo m
 def inverse(a, m):
     i = m
     j = a
