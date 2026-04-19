@@ -19,3 +19,14 @@ def pkcs_padding(message, k):
                     break
 
     return b'\x00\x02' + bytes(ps) + b'\x00' + message
+
+def pkcs1_signature_padding(digest_info, k):
+    t_len = len(digest_info)
+
+    if t_len > k - 11:
+        raise ValueError("Message too long")
+
+    ps_len = k - t_len - 3
+    ps = b'\xFF' * ps_len
+
+    return b'\x00\x01' + ps + b'\x00' + digest_info

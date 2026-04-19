@@ -2,7 +2,7 @@
 def pkcs_unpadding(padded_message):
     if len(padded_message) < 11:
         raise ValueError("Invalid padded message length")
-
+    print(padded_message)
     if padded_message[0] != 0x00 or padded_message[1] != 0x02:
         raise ValueError("Invalid padding format")
 

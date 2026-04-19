@@ -5,7 +5,11 @@ from helpers.SHA256.SecureHashingAlgorithm import sha_256
 def verify(message, signature, public_key):
     n = public_key[0]
     e = public_key[1]
-    m = pow(signature, e, n)
+    if isinstance(signature, bytes):
+        s = int.from_bytes(signature,'big')
+    else:
+        s = signature
+    m = pow(s, e, n)
     k = (n.bit_length() + 7) // 8
     EM = m.to_bytes(k, "big")
 

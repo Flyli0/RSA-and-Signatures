@@ -1,4 +1,4 @@
-from Padding.PKCS_Padding import pkcs_padding
+from Padding.PKCS_Padding import pkcs1_signature_padding
 from helpers.SHA256.SecureHashingAlgorithm import sha_256
 
 
@@ -9,7 +9,8 @@ def sign(message, private_key, bit_size):
     if len(digest_info) > bit_size//8 - 11:
         raise ValueError("Message too long")
 
-    m = pkcs_padding(digest_info, bit_size)
+    m = pkcs1_signature_padding(digest_info, bit_size//8)
+    m = int.from_bytes(m,'big') # this
     n = private_key[0]
     d = private_key[1]
     s = pow(m,d,n)

@@ -25,6 +25,7 @@ class RSAApp(tk.Tk):
 
         self.notebook = ttk.Notebook(self)
         self.notebook.pack(fill="both", expand=True)
+        self.signature = 0
 
         self.key_tab = ttk.Frame(self.notebook)
         self.rsa_tab = ttk.Frame(self.notebook)
@@ -146,28 +147,38 @@ class RSAApp(tk.Tk):
         data = self.rsa_input.get("1.0", tk.END).strip()
         label = self.oaep_label.get()
 
-        # TODO: подключить label в oaep/oaep_unpad в твоей крипто-логике
+
 
 
         if self.rsa_mode.get() == "encrypt":
-            dataEnc = data.encode()
+            data = data.encode()
             if self.padding.get() == "oaep":
-                dataEnc = oaep(int(self.key_size.get()),dataEnc,label)
+                data = oaep(int(self.key_size.get()),data,label)
+                data = int.from_bytes(data,'big')
             else:
-                dataEnc = pkcs_padding(dataEnc, int(self.key_size.get()))
-            dataEnc = int.from_bytes(dataEnc,'big')
-            result = encrypt(dataEnc, key)
+                data = pkcs_padding(data, int(self.key_size.get())//8)
+                data = int.from_bytes(data, 'big')
+            result = encrypt(data, key)
         else:
-            dataDec = int(data)
-            result = decrypt(dataDec, key)
-            k = (key[0].bit_length() + 7) // 8
-            result = result.to_bytes(k,'big')
-            if self.padding.get() == "oaep":
+            data = int(data)
+            n = key[0]
+            result = decrypt(data, key)
+            result = result % n
 
-                result = oaep_unpad(result,int(self.key_size.get()),label)
+
+
+            k = (n.bit_length() + 7) // 8
+
+            result = result.to_bytes(k, 'big')
+            print("EM HEX:", result.hex())
+            print("FIRST BYTE:", result[0])
+            print("SECOND BYTE:", result[1])
+            if self.padding.get() == "oaep":
+                result = oaep_unpad(result, int(self.key_size.get()), label)
             else:
                 result = pkcs_unpadding(result)
-            result.decode()
+
+            result = result.decode()
 
         self.rsa_output.delete("1.0", tk.END)
         self.rsa_output.insert("1.0", result)
@@ -175,6 +186,7 @@ class RSAApp(tk.Tk):
     # ================= SIGNATURE TAB =================
     def build_sig_tab(self):
         self.sig_mode = tk.StringVar(value="sign")
+        self.sig_mode.trace_add("write", self.on_sig_mode_change)
         self.sig_pad = tk.StringVar(value="pkcs")
 
         ttk.Radiobutton(self.sig_tab, text="Sign", variable=self.sig_mode, value="sign").pack()
@@ -185,8 +197,16 @@ class RSAApp(tk.Tk):
                       values=["pkcs", "pss"]).pack()
 
         ttk.Label(self.sig_tab, text="Message:").pack()
-        self.sig_msg = tk.Text(self.sig_tab, height=8)
+        self.sig_msg = tk.Text(self.sig_tab, height=6)
         self.sig_msg.pack(fill="both", expand=True)
+
+        # Signature input (used in verify mode)
+        self.sig_sig_frame = ttk.Frame(self.sig_tab)
+        self.sig_sig_frame.pack(fill="both", expand=True, pady=5)
+
+        ttk.Label(self.sig_sig_frame, text="Signature (int or bytes):").pack()
+        self.sig_signature = tk.Text(self.sig_sig_frame, height=4)
+        self.sig_signature.pack(fill="both", expand=True)
 
         ttk.Label(self.sig_tab, text="Key:").pack()
         self.sig_key = tk.Entry(self.sig_tab)
@@ -198,6 +218,8 @@ class RSAApp(tk.Tk):
         self.sig_out = tk.Text(self.sig_tab, height=8)
         self.sig_out.pack(fill="both", expand=True)
 
+        self.on_sig_mode_change()
+
     def run_sig(self):
         key = self.parse_sig_key()
         if not key:
@@ -208,11 +230,44 @@ class RSAApp(tk.Tk):
         if self.sig_mode.get() == "sign":
             res = sign(msg, key, 1024)
         else:
-            res = verify(msg, msg, key)
+            sig_text = self.sig_signature.get("1.0", tk.END).strip()
+            try:
+                # allow int or bytes (hex string)
+                if sig_text.startswith("0x"):
+                    self.signature = int(sig_text, 16).to_bytes((key[0].bit_length()+7)//8, 'big')
+                elif sig_text.isdigit():
+                    self.signature = int(sig_text).to_bytes((key[0].bit_length()+7)//8, 'big')
+                else:
+                    # assume hex without 0x
+                    self.signature = bytes.fromhex(sig_text)
+            except Exception:
+                messagebox.showerror("Error", "Invalid signature format")
+                return
+
+            res = verify(msg, self.signature, key)
+
+        self.sig_out.delete("1.0", tk.END)
+        self.sig_out.insert(tk.END, str(res))
+        key = self.parse_sig_key()
+        if not key:
+            return
+
+        msg = self.sig_msg.get("1.0", tk.END).strip().encode()
+
+        if self.sig_mode.get() == "sign":
+            res = sign(msg, key, 1024)
+        else:
+            res = verify(msg, self.signature, key)
 
         self.sig_out.delete("1.0", tk.END)
         self.sig_out.insert(tk.END, str(res))
 
+    def on_sig_mode_change(self, *args):
+        self.sig_key.delete(0,tk.END)
+        if self.sig_mode.get() == "sign":
+            self.sig_signature.config(state="disabled")
+        else:
+            self.sig_signature.config(state="normal")
     def parse_sig_key(self):
         try:
             return eval(self.sig_key.get())
