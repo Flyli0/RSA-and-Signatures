@@ -29,7 +29,9 @@ EM = m.to_bytes(k, "big")
 
 # 6. unpad
 # msg = oaep_unpad(m, 1024)   # if your function takes int
-# или:
+# or:
 msg = oaep_unpad(EM, 1024)  # if bytes
 print(msg)
 print(msg.decode())
+
+
