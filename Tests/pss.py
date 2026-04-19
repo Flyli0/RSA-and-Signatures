@@ -1,6 +1,7 @@
 from Padding.PSS_encode import pss_encode
 from Padding.PSS_verify import pss_verify
 
+#PSS encoding, verification test
 message = 'fwfe'
 message = message.encode()
 message = pss_encode(message, 2048, 64)

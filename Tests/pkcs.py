@@ -1,6 +1,7 @@
 from Padding.PKCS_Padding import pkcs_padding
 from Padding.PKCS_Unpadding import pkcs_unpadding
 
+#PKCS padding, unpadding test
 message = 'fwfe'
 message = message.encode()
 
