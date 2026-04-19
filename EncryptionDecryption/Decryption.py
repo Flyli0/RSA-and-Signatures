@@ -6,5 +6,5 @@ def decrypt(cipher, private_key):
     m2 = pow(cipher, dQ, q)
 
     h = (qInv * (m1-m2))%p  # calculating correction
-    message = m2 + h * q  # we used m2 as base and just added some k*q, so it satisfies x = p mod m1 and x = 1 mod m2
+    message = m2 + h * q  # we used m2 as base and just added some h*q, so it satisfies x = p mod m1 and x = 1 mod m2
     return message
