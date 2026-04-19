@@ -4,9 +4,9 @@ from ModularArithmeticOperations.ExtendedEuclideanAlgorithm import inverse
 
 def generate_keys(bit_size):
     while True:
-        p = generate_prime(bit_size / 2)
-        q = generate_prime(bit_size / 2)
-        if abs(p - q) > 2 ** (bit_size / 2 - 100):
+        p = generate_prime(bit_size // 2)
+        q = generate_prime(bit_size // 2)
+        if abs(p - q) > 2 ** (100):  # (bit_size / 2 - 100)
             n = p * q
             fi = (p - 1) * (q - 1)
             e = 65537

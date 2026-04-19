@@ -8,7 +8,6 @@ def generate_odd(size_bits):  # using our generator create odds of different siz
     sum = 0
     while size < size_bits:
         rnd = random_bytes(size_bytes)
-        rnd = sha_512(rnd)
         rnd = int.from_bytes(rnd,"big")
         sum += rnd
         size += 512
