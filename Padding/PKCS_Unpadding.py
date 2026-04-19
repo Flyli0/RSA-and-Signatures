@@ -1,4 +1,4 @@
-#fucntion for PKCS unpadding, takes a padded message
+#function for PKCS unpadding, takes a padded message, returns unpadded message
 def pkcs_unpadding(padded_message):
     if len(padded_message) < 11:
         raise ValueError("Invalid padded message length")

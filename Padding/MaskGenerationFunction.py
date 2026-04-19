@@ -15,5 +15,5 @@ def mgf(seed, length):
 
         output.extend(digest)
         counter += 1
-        print(length)
+        # print(length)
     return bytes(output[:length])

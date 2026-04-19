@@ -11,7 +11,7 @@ def pss_encode(message, em_bits, salt_len = 64):
     if em_len < h_len + salt_len + 2:
         raise ValueError("Encoding error")
 
-    salt = seed()
+    salt = seed().to_bytes(salt_len, 'big')
     while len(salt) < salt_len:
         salt += sha_512(salt)
     salt = salt[:salt_len]

@@ -1,15 +1,21 @@
-from PrimeNumberGeneration.SHA512.SecureHashingAlgorithm import sha_512
-from EncryptionDecryption.Seed import seed
+from PrimeNumberGeneration.RandomBytes import random_bytes
 
-#function for PKCS padding, takes message and size of key in bits
-def pkcs_padding(message, bit_size):
-    byte_size = bit_size // 8
-    ps_length = byte_size - (3 + len(message))
-    ps = b""
-    raw_bytes = seed()
-    while len(ps) < ps_length:
-        raw_bytes = sha_512(raw_bytes)
-        non_zero_bytes = bytes(byte for byte in raw_bytes if byte != 0)
-        ps += non_zero_bytes
-    padded_message = b'\x00\x02' + ps + b'\x00' + message
-    return padded_message
+#function that takes message and padded_message length in bytes and returns padded message
+def pkcs_padding(message, k):
+    m_len = len(message)
+
+    if m_len > k - 11:
+        raise ValueError("Message too long")
+
+    ps_len = k - m_len - 3
+
+    ps = bytearray()
+    while len(ps) < ps_len:
+        chunk = random_bytes(ps_len - len(ps))
+        for b in chunk:
+            if b != 0:
+                ps.append(b)
+                if len(ps) == ps_len:
+                    break
+
+    return b'\x00\x02' + bytes(ps) + b'\x00' + message
